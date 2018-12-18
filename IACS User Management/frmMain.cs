@@ -497,5 +497,103 @@ namespace IACS_User_Management
                 lvOrganizations.Columns[0].Width = lvOrganizations.Width - 25;
             }
         }
+
+        private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lbReports_Click(object sender, EventArgs e)
+        {
+            if (lbReports.SelectedIndex > -1)
+            {
+                if (lbReports.SelectedItem.ToString().Equals("Cards in Organization"))
+                {
+                    List<String> partitions = new List<String>();
+                    if (!GetPartitions(ref partitions))
+                    {
+                        // error handling
+                    }
+                }
+            }
+        }
+
+        private bool GetPartitions(ref List<String> partitions)
+        {
+            partitions = new List<String>();
+            ListViewItem lvi;
+            String errMsg = "";
+
+            if (!liveDbManager.GetPartitionList(ref partitions, ref errMsg))
+            {
+                return false;
+            }
+            else
+            {
+                //bool alternateRow = false;
+                lbReportDetail.Items.Clear();
+                foreach (String partition in partitions)
+                {
+                    if (!partition.ToLower().Equals("none"))
+                    {
+                        lvi = new ListViewItem(partition, 0);
+                        //lvi.BackColor = (alternateRow) ? Color.AliceBlue : Color.White;
+                        //alternateRow = (alternateRow) ? false : true;
+
+                        lbReportDetail.Items.Add(partition);
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private void DoReport(String report, String detail)
+        {
+            String csv = "";
+            String errMsg = "";
+            if (!liveDbManager.GetCardInfoByOrg(detail, ref csv, ref errMsg))
+            {
+                MessageBox.Show("Report Failed!", "Report Failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                //MessageBox.Show(csv, "CSV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                sfdSaveReport.DefaultExt = "csv";
+                sfdSaveReport.AddExtension = true;
+                sfdSaveReport.FileName += "BadgeByOrgReport";
+                sfdSaveReport.ShowDialog();
+                String filePath = sfdSaveReport.FileName;
+
+                try
+                {
+                    File.WriteAllText(filePath, csv);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Could not save file!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                
+                MessageBox.Show("File saved to: \v\v" + filePath, "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void lbReportDetail_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void lbReportDetail_DoubleClick(object sender, EventArgs e)
+        {
+            System.Windows.Forms.DialogResult retVal = MessageBox.Show("Run the report " + lbReports.SelectedItem.ToString() + ", " + lbReportDetail.SelectedItem.ToString() + "?", "Run This Report?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (retVal == System.Windows.Forms.DialogResult.Cancel)
+            {
+                return;
+            }
+
+            DoReport(lbReports.SelectedItem.ToString(), lbReportDetail.SelectedItem.ToString());
+        }
     }
 }

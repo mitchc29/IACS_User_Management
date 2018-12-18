@@ -662,9 +662,9 @@ namespace IACS_User_Management
             {
                 try
                 {
-                    int paramValue = 1;
+                    int paramValue1 = 1;
                     SqlCommand command = new SqlCommand(queryString, connection);
-                    command.Parameters.AddWithValue("@Name", paramValue);
+                    command.Parameters.AddWithValue("@Name", paramValue1);
 
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
@@ -678,6 +678,204 @@ namespace IACS_User_Management
                     }
 
                     reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    errMsg = ex.Message;
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        public bool GetAccessGroupObjId(int GroupId, ref String objId, ref String errMsg)
+        {
+            SqlConnectionStringBuilder conStr = new SqlConnectionStringBuilder();
+
+            conStr.DataSource           = serverName;
+            conStr.InitialCatalog       = dbName;
+            conStr.IntegratedSecurity   = false; // Sql Server Authentification
+            conStr.UserID               = dbUserName;
+            conStr.Password             = dbPassword;
+            objId                       = "";
+
+            String queryString = "SELECT [caObjectId] FROM AccGrp WHERE Agno=" + GroupId;
+
+            using (SqlConnection connection = new SqlConnection(conStr.ConnectionString))
+            {
+                try
+                {
+                    int paramValue1 = 1;
+                    SqlCommand command = new SqlCommand(queryString, connection);
+                    command.Parameters.AddWithValue("@caObjectId", paramValue1);
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        //if (!partitionNames.Contains(reader[0].ToString()))
+                        //{
+                        //    partitionNames.Add(reader[0].ToString());
+                        //}
+                        objId = reader[0].ToString();
+                        break;
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    errMsg = ex.Message;
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        public bool GetPartitionAndGroupNo(ref Dictionary<String, int> combo, ref String errMsg)
+        {
+            SqlConnectionStringBuilder conStr = new SqlConnectionStringBuilder();
+
+            if (combo == null) { combo = new Dictionary<String, int>(); }
+            combo.Clear();
+
+            conStr.DataSource = serverName;
+            conStr.InitialCatalog = dbName;
+            conStr.IntegratedSecurity = false; // Sql Server Authentification
+            conStr.UserID = dbUserName;
+            conStr.Password = dbPassword;
+
+            String queryString = "SELECT [Name], [ItemNo] FROM Groups";
+
+            using (SqlConnection connection = new SqlConnection(conStr.ConnectionString))
+            {
+                try
+                {
+                    int paramValue1 = 1;
+                    int paramValue2 = 2;
+                    SqlCommand command = new SqlCommand(queryString, connection);
+                    command.Parameters.AddWithValue("@Name", paramValue1);
+                    command.Parameters.AddWithValue("@ItemNo", paramValue2);
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        if (!combo.Keys.Contains(reader[0].ToString()))
+                        {
+                            combo.Add(reader[0].ToString(), Int32.Parse(reader[1].ToString()));
+                        }
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    errMsg = ex.Message;
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        public bool GetCardInfoByOrg(String orgName, ref String csv, ref String errMsg)
+        {
+            SqlConnectionStringBuilder conStr   = new SqlConnectionStringBuilder();
+            StringBuilder sb                    = new StringBuilder();
+            Dictionary<String, String> accGroup = new Dictionary<String, String>();
+            int groupNo                         = -1;
+
+            Dictionary<String, int> combo = new Dictionary<String, int>();
+            //combo.Clear();
+
+            conStr.DataSource           = serverName;
+            conStr.InitialCatalog       = dbName;
+            conStr.IntegratedSecurity   = false; // Sql Server Authentification
+            conStr.UserID               = dbUserName;
+            conStr.Password             = dbPassword;
+
+            if (!GetPartitionAndGroupNo(ref combo, ref errMsg))
+            {
+                return false;
+            }
+
+            if (!combo.TryGetValue(orgName, out groupNo))
+            {
+                errMsg = "Organization not found!";
+                return false;
+            }
+
+            String queryString          = "SELECT [Badge], [AGroup1], [Enabled], [LastName], [FrstName] FROM Badge WHERE GroupNo=" + groupNo;
+
+            using (SqlConnection connection = new SqlConnection(conStr.ConnectionString))
+            {
+                try
+                {
+                    String val      = "";
+                    int paramValue1 = 1;
+                    int paramValue2 = 2;
+                    int paramValue3 = 3;
+                    int paramValue4 = 4;
+                    int paramValue5 = 5;
+                    SqlCommand command = new SqlCommand(queryString, connection);
+                    command.Parameters.AddWithValue("@Badge", paramValue1);
+                    command.Parameters.AddWithValue("@AGroup1", paramValue2);
+                    command.Parameters.AddWithValue("@Enabled", paramValue3);
+                    command.Parameters.AddWithValue("@LastName", paramValue4);
+                    command.Parameters.AddWithValue("@FrstName", paramValue5);
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    sb.Append("LAST NAME");
+                    sb.Append(", ");
+                    sb.Append("FIRST NAME");
+                    sb.Append(", ");
+                    sb.Append("BADGE NUMBER");
+                    sb.Append(", ");
+                    sb.Append("ACCESS GROUP ID");
+                    sb.Append(", ");
+                    sb.Append("ENABLED / DISABLED\n");
+
+                    while (reader.Read())
+                    {
+                        //if (!combo.Keys.Contains(reader[0].ToString()))
+                        //{
+                        //    combo.Add(reader[0].ToString(), Int32.Parse(reader[1].ToString()));
+                        //}
+                        sb.Append(reader[3].ToString().Replace(",", ""));
+                        sb.Append(", ");
+                        sb.Append(reader[4].ToString().Replace(",", ""));
+                        sb.Append(", ");
+                        sb.Append(reader[0].ToString().Replace(",", ""));
+                        sb.Append(", ");
+
+                        val = "";
+                        if (accGroup.TryGetValue(reader[1].ToString(), out val))
+                        {
+                            sb.Append(val);
+                        }
+                        else
+                        {
+                            if(GetAccessGroupObjId(int.Parse(reader[1].ToString()), ref val, ref errMsg)) 
+                            {
+                                accGroup.Add(reader[1].ToString(), val);
+                                sb.Append(val);
+                            }
+                        }
+
+                        //sb.Append(reader[1].ToString());
+                        sb.Append(", ");
+                        sb.Append(bool.Parse(reader[2].ToString()) == true ? "Enabled\n" : "Disabled\n");
+                    }
+
+                    reader.Close();
+                    csv = sb.ToString();
                 }
                 catch (Exception ex)
                 {
@@ -734,6 +932,8 @@ namespace IACS_User_Management
                 return true;
             }
         }
+
+
 
         private bool GetPrivNumber(String priv, ref String errMsg)
         {

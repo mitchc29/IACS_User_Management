@@ -43,6 +43,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tbNewOrgName = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lvOrganizations = new System.Windows.Forms.ListView();
+            this.colOrg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ilOrgIcon = new System.Windows.Forms.ImageList(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.tabOperator = new System.Windows.Forms.TabPage();
             this.gbOperators = new System.Windows.Forms.GroupBox();
@@ -62,9 +65,12 @@
             this.cmsOperatorRightClick = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteThisOperatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblOperatorInstructions = new System.Windows.Forms.Label();
-            this.lvOrganizations = new System.Windows.Forms.ListView();
-            this.colOrg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ilOrgIcon = new System.Windows.Forms.ImageList(this.components);
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.gbReportList = new System.Windows.Forms.GroupBox();
+            this.lbReports = new System.Windows.Forms.ListBox();
+            this.gbReportDetail = new System.Windows.Forms.GroupBox();
+            this.lbReportDetail = new System.Windows.Forms.ListBox();
+            this.sfdSaveReport = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tcControls.SuspendLayout();
@@ -75,6 +81,9 @@
             this.gbOperators.SuspendLayout();
             this.gbOperatorList.SuspendLayout();
             this.cmsOperatorRightClick.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.gbReportList.SuspendLayout();
+            this.gbReportDetail.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -133,6 +142,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcControls.Controls.Add(this.tabOrganization);
             this.tcControls.Controls.Add(this.tabOperator);
+            this.tcControls.Controls.Add(this.tabPage1);
             this.tcControls.Location = new System.Drawing.Point(12, 37);
             this.tcControls.Name = "tcControls";
             this.tcControls.SelectedIndex = 0;
@@ -221,6 +231,37 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Organizations:";
+            // 
+            // lvOrganizations
+            // 
+            this.lvOrganizations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvOrganizations.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lvOrganizations.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colOrg});
+            this.lvOrganizations.FullRowSelect = true;
+            this.lvOrganizations.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.lvOrganizations.Location = new System.Drawing.Point(6, 19);
+            this.lvOrganizations.Name = "lvOrganizations";
+            this.lvOrganizations.Size = new System.Drawing.Size(613, 221);
+            this.lvOrganizations.SmallImageList = this.ilOrgIcon;
+            this.lvOrganizations.TabIndex = 0;
+            this.lvOrganizations.UseCompatibleStateImageBehavior = false;
+            this.lvOrganizations.View = System.Windows.Forms.View.Details;
+            this.lvOrganizations.SelectedIndexChanged += new System.EventHandler(this.lvOrganizations_SelectedIndexChanged);
+            this.lvOrganizations.Resize += new System.EventHandler(this.lvOrganizations_Resize);
+            // 
+            // colOrg
+            // 
+            this.colOrg.Text = "Organization";
+            this.colOrg.Width = 575;
+            // 
+            // ilOrgIcon
+            // 
+            this.ilOrgIcon.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilOrgIcon.ImageStream")));
+            this.ilOrgIcon.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilOrgIcon.Images.SetKeyName(0, "edit-group.ico");
             // 
             // label1
             // 
@@ -416,36 +457,66 @@
     " directly.";
             this.lblOperatorInstructions.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lvOrganizations
+            // tabPage1
             // 
-            this.lvOrganizations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tabPage1.Controls.Add(this.gbReportDetail);
+            this.tabPage1.Controls.Add(this.gbReportList);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(656, 425);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Reports";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // gbReportList
+            // 
+            this.gbReportList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.gbReportList.Controls.Add(this.lbReports);
+            this.gbReportList.Location = new System.Drawing.Point(6, 6);
+            this.gbReportList.Name = "gbReportList";
+            this.gbReportList.Size = new System.Drawing.Size(200, 413);
+            this.gbReportList.TabIndex = 0;
+            this.gbReportList.TabStop = false;
+            this.gbReportList.Text = "Select Report";
+            // 
+            // lbReports
+            // 
+            this.lbReports.FormattingEnabled = true;
+            this.lbReports.Items.AddRange(new object[] {
+            "Cards in Organization"});
+            this.lbReports.Location = new System.Drawing.Point(6, 19);
+            this.lbReports.Name = "lbReports";
+            this.lbReports.Size = new System.Drawing.Size(188, 381);
+            this.lbReports.TabIndex = 0;
+            this.lbReports.Click += new System.EventHandler(this.lbReports_Click);
+            // 
+            // gbReportDetail
+            // 
+            this.gbReportDetail.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvOrganizations.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvOrganizations.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colOrg});
-            this.lvOrganizations.FullRowSelect = true;
-            this.lvOrganizations.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.lvOrganizations.Location = new System.Drawing.Point(6, 19);
-            this.lvOrganizations.Name = "lvOrganizations";
-            this.lvOrganizations.Size = new System.Drawing.Size(613, 221);
-            this.lvOrganizations.SmallImageList = this.ilOrgIcon;
-            this.lvOrganizations.TabIndex = 0;
-            this.lvOrganizations.UseCompatibleStateImageBehavior = false;
-            this.lvOrganizations.View = System.Windows.Forms.View.Details;
-            this.lvOrganizations.SelectedIndexChanged += new System.EventHandler(this.lvOrganizations_SelectedIndexChanged);
-            this.lvOrganizations.Resize += new System.EventHandler(this.lvOrganizations_Resize);
+            this.gbReportDetail.Controls.Add(this.lbReportDetail);
+            this.gbReportDetail.Location = new System.Drawing.Point(212, 6);
+            this.gbReportDetail.Name = "gbReportDetail";
+            this.gbReportDetail.Size = new System.Drawing.Size(438, 413);
+            this.gbReportDetail.TabIndex = 1;
+            this.gbReportDetail.TabStop = false;
+            this.gbReportDetail.Text = "Report Detail";
             // 
-            // colOrg
+            // lbReportDetail
             // 
-            this.colOrg.Text = "Organization";
-            this.colOrg.Width = 575;
-            // 
-            // ilOrgIcon
-            // 
-            this.ilOrgIcon.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilOrgIcon.ImageStream")));
-            this.ilOrgIcon.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilOrgIcon.Images.SetKeyName(0, "edit-group.ico");
+            this.lbReportDetail.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbReportDetail.FormattingEnabled = true;
+            this.lbReportDetail.Location = new System.Drawing.Point(6, 19);
+            this.lbReportDetail.Name = "lbReportDetail";
+            this.lbReportDetail.Size = new System.Drawing.Size(426, 381);
+            this.lbReportDetail.TabIndex = 0;
+            this.lbReportDetail.Click += new System.EventHandler(this.lbReportDetail_Click);
+            this.lbReportDetail.DoubleClick += new System.EventHandler(this.lbReportDetail_DoubleClick);
             // 
             // frmMain
             // 
@@ -479,6 +550,9 @@
             this.gbOperators.PerformLayout();
             this.gbOperatorList.ResumeLayout(false);
             this.cmsOperatorRightClick.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.gbReportList.ResumeLayout(false);
+            this.gbReportDetail.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -522,6 +596,12 @@
         private System.Windows.Forms.ListView lvOrganizations;
         private System.Windows.Forms.ColumnHeader colOrg;
         private System.Windows.Forms.ImageList ilOrgIcon;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.GroupBox gbReportDetail;
+        private System.Windows.Forms.ListBox lbReportDetail;
+        private System.Windows.Forms.GroupBox gbReportList;
+        private System.Windows.Forms.ListBox lbReports;
+        private System.Windows.Forms.SaveFileDialog sfdSaveReport;
     }
 }
 

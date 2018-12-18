@@ -1,0 +1,16 @@
+C:\Users\peted\Documents\Visual Studio 2010\Projects\IACS User Management\IACS User Management\bin\Debug\IACS User Management.exe
+C:\Users\peted\Documents\Visual Studio 2010\Projects\IACS User Management\IACS User Management\bin\Debug\IACS User Management.pdb
+C:\Users\peted\Documents\Visual Studio 2010\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS_User_Management.frmMain.resources
+C:\Users\peted\Documents\Visual Studio 2010\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS_User_Management.frmConfig.resources
+C:\Users\peted\Documents\Visual Studio 2010\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS_User_Management.Properties.Resources.resources
+C:\Users\peted\Documents\Visual Studio 2010\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS User Management.csproj.GenerateResource.Cache
+C:\Users\peted\Documents\Visual Studio 2010\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS User Management.exe
+C:\Users\peted\Documents\Visual Studio 2010\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS User Management.pdb
+C:\Users\peted\Documents\Visual Studio 2017\Projects\IACS User Management\IACS User Management\bin\Debug\IACS User Management.exe
+C:\Users\peted\Documents\Visual Studio 2017\Projects\IACS User Management\IACS User Management\bin\Debug\IACS User Management.pdb
+C:\Users\peted\Documents\Visual Studio 2017\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS_User_Management.frmMain.resources
+C:\Users\peted\Documents\Visual Studio 2017\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS_User_Management.frmConfig.resources
+C:\Users\peted\Documents\Visual Studio 2017\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS_User_Management.Properties.Resources.resources
+C:\Users\peted\Documents\Visual Studio 2017\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS User Management.csproj.GenerateResource.Cache
+C:\Users\peted\Documents\Visual Studio 2017\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS User Management.exe
+C:\Users\peted\Documents\Visual Studio 2017\Projects\IACS User Management\IACS User Management\obj\x86\Debug\IACS User Management.pdb
